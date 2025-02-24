@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api/positions'; // API endpoint for positions
+const API_URL = 'http://localhost:3000/positions'; // API endpoint for positions
 
 export const getPositions = async () => {
   const response = await axios.get(API_URL);

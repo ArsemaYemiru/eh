@@ -27,7 +27,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <PositionList onEdit={handleEdit} />
+      <PositionList />
       <Button onClick={() => setIsFormOpen(true)} className="mt-4">
         Add Position
       </Button>
