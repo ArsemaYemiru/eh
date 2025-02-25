@@ -6,6 +6,9 @@ import "@/app/employee_hierarch/styles/globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { MantineProvider } from "@mantine/core";
+// core styles are required for all packages
+import '@mantine/core/styles.css';
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

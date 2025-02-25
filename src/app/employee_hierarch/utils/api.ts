@@ -1,7 +1,6 @@
 import axios from 'axios';
-
-const BASE_URL = 'http://localhost:3000';
-const API_URL = '/api/positions'; // API endpoint for positions
+const API_URL = '/api/positions'; 
+const API_URL = 'http://localhost:3000/positions'; /
 
 export const getPositions = async () => {
   const response = await axios.get(API_URL);
