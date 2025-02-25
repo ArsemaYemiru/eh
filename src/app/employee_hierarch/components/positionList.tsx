@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { List, Group, Button } from '@mantine/core';
-import { getPositions } from '../services/positionService';
+import { getPositions  } from '../utils/api';
 
 interface Position {
   id: number;

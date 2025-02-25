@@ -16,12 +16,19 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: position ? updatePosition : createPosition,
+    mutationFn: async (payload: { id?: number; name: string; parent_id: number | null }) => {
+      if (position) {
+        return updatePosition({ id: payload.id!, name: payload.name, parent_id: payload.parent_id }, {name, parentId, description: ''});
+      } else {
+        return createPosition(payload);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['positions'] });
       onClose();
     },
   });
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +36,7 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
     if (position) {
       mutation.mutate({ ...payload, id: position.id });
     } else {
-      mutation.mutate(payload as any);
+      mutation.mutate(payload);
     }
   };
 
