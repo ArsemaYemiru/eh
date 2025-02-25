@@ -23,6 +23,8 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
     },
   });
 
+
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const payload = { name, parent_id: parentId };
@@ -39,14 +41,14 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
         label="Position Name"
         placeholder="Enter position name"
         value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e: { target: { value: any; }; }) => setName(e.target.value)}
         required
       />
       <Select
         label="Parent Position"
         placeholder="Select parent position"
         value={parentId !== null ? parentId.toString() : ''}
-        onChange={(value) => setParentId(value ? parseInt(value) : null)}
+        onChange={(value: string | null) => setParentId(value ? parseInt(value) : null)}
         data={[{ value: '', label: 'No Parent' }, /* Add dynamic data here */]}
       />
       <Group mt="md" grow>
