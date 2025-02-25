@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
+import { getPositions  } from '../utils/api';
 import { List, Group, Button, Card, Title, Text, Modal } from '@mantine/core';
-import { getPositions } from '../services/positionService';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import PositionForm from './positionForm';

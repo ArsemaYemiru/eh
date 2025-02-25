@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getPositions, getPositionById, createPosition, updatePosition, deletePosition } from '../../services/positionService';
+import { getPositions, getPositionById, createPosition, updatePosition, deletePosition } from '../../utils/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -10,8 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'POST') {
-      const { name, parentId, description } = req.body;
-      const newPosition = await createPosition({ name, parentId, description });
+      const { name, parent_id } = req.body;
+      const newPosition = await createPosition({ name, parent_id });
       res.status(201).json(newPosition);
       return;
     }

@@ -4,12 +4,12 @@ import { Button, TextInput, Select, Group } from '@mantine/core';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createPosition, updatePosition } from '../utils/api';
 
-interface PositionFormProps {
+interface EditFormProps {
   position?: { id: number; name: string; parent_id: number | null };
   onClose: () => void;
 }
 
-export const PositionForm = ({ position, onClose }: PositionFormProps) => {
+export const EditForm = ({ position, onClose }: EditFormProps) => {
   const [name, setName] = useState(position?.name || '');
   const [parentId, setParentId] = useState<number | null>(position?.parent_id || null);
 
@@ -30,8 +30,6 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
   });
   
 
-
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const payload = { name, parent_id: parentId };
@@ -48,14 +46,21 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
         label="Position Name"
         placeholder="Enter position name"
         value={name}
-        onChange={(e: { target: { value: any; }; }) => setName(e.target.value)}
+        onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <TextInput
+        label="New Position Name"
+        placeholder="Enter position name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
         required
       />
       <Select
         label="Parent Position"
         placeholder="Select parent position"
         value={parentId !== null ? parentId.toString() : ''}
-        onChange={(value: string | null) => setParentId(value ? parseInt(value) : null)}
+        onChange={(value) => setParentId(value ? parseInt(value) : null)}
         data={[{ value: '', label: 'No Parent' }, /* Add dynamic data here */]}
       />
       <Group mt="md" grow>
@@ -65,4 +70,4 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
   );
 };
 
-export default PositionForm;
+export default EditForm;
