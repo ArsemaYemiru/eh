@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getPositions, getPositionById, createPosition, updatePosition, deletePosition } from '../../utils/api';
+import { getPositions, createPosition, updatePosition, deletePosition } from '../../utils/api';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -17,8 +17,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'PUT') {
-      const { id, name, parentId, description } = req.body;
-      const updatedPosition = await updatePosition(id, { name, parentId, description });
+      const { id, name, parent_id } = req.body;
+      const updatedPosition = await updatePosition({ id, name, parent_id });
       if (updatedPosition) {
         res.status(200).json(updatedPosition);
       } else {

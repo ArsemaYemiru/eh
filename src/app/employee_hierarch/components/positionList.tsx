@@ -1,9 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
-import { getPositions  } from '../utils/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { List, Group, Button, Card, Title, Text, Modal } from '@mantine/core';
+import { deletePosition, getPositions } from '../utils/api';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import PositionForm from './positionForm';
+
 
 interface Position {
   id: number;
@@ -21,6 +22,15 @@ export const PositionList = () => {
   const [currentPosition, setCurrentPosition] = useState<Position | undefined>(undefined);
   const [opened, { open, close }] = useDisclosure(false);
 
+
+  const queryClient = useQueryClient();
+
+  const handleDelete = async (id: number) => {
+    await deletePosition(id);
+    // Invalidate the positions query so it will refetch the data
+    queryClient.invalidateQueries({ queryKey: ['positions'] });
+  };
+  
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -56,7 +66,7 @@ export const PositionList = () => {
                       Edit
                     </Button>
                     <div>
-                      <Button color="red" variant="outline">
+                      <Button color="red" variant="outline" onClick={() => handleDelete(position.id)}>
                         Delete
                       </Button></div>
                   </Group>
