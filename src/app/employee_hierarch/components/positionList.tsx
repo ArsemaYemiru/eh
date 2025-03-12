@@ -27,7 +27,6 @@ export const PositionList = () => {
 
   const handleDelete = async (id: number) => {
     await deletePosition(id);
-    // Invalidate the positions query so it will refetch the data
     queryClient.invalidateQueries({ queryKey: ['positions'] });
   };
   
@@ -86,9 +85,7 @@ export const PositionList = () => {
 
   return (
     <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-      <Title order={2} mb="md">
-        Positions
-      </Title>
+     
       <Modal
           opened={opened}
           onClose={close}
