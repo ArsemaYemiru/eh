@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button, TextInput, Select, Group } from '@mantine/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createPosition, getPositions, updatePosition } from '../utils/api';
+import { Position } from 'postcss';
 
 interface PositionFormProps {
   position?: { id: number; name: string; parent_id: number | null };
@@ -10,11 +11,12 @@ interface PositionFormProps {
 }
 
 export const PositionForm = ({ position, onClose }: PositionFormProps) => {
-  const { data: positions} = useQuery({
+  const { data: positions = [] } = useQuery({
     queryKey: ['positions'],
     queryFn: getPositions,
     staleTime: Infinity,
   });
+
   const [name, setName] = useState(position?.name || '');
   const [parentId, setParentId] = useState<number | null>(position?.parent_id || null);
 
@@ -28,7 +30,16 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
     },
   });
 
-
+  const flattenPositions = (positions: Position[]) => {
+    const flattenedPositions: Position[] = [];
+    positions.forEach(position => {
+      flattenedPositions.push(position);
+      if ('children' in position && position.children) {
+        flattenedPositions.push(...flattenPositions(position.children as Position[]));
+      }
+    });
+    return flattenedPositions;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,22 +51,27 @@ export const PositionForm = ({ position, onClose }: PositionFormProps) => {
     }
   };
 
+  const filteredParents = flattenPositions(positions).filter(p => p.id !== position?.id);
+
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
         label="Position Name"
         placeholder="Enter position name"
         value={name}
-        onChange={(e: { target: { value: any; }; }) => setName(e.target.value)}
+        onChange={(e: { target: { value: any } }) => setName(e.target.value)}
         required
       />
       <Select
         label="Parent Position"
-        placeholder="Select parent position"
         value={parentId !== null ? parentId.toString() : ''}
         onChange={(value: string | null) => setParentId(value ? parseInt(value) : null)}
-        data={[{ value: "", label: 'No Parent' }, ...positions.map((position: any) => ({ value: position.id.toString(), label: position.name }))]}
+        data={[
+          { value: "", label: 'No Parent' },
+          ...filteredParents.map((p: any) => ({ value: p.id.toString(), label: p.name })),
+        ]}
       />
+
       <Group mt="md" grow>
         <Button type="submit">{position ? 'Update Position' : 'Create Position'}</Button>
       </Group>
